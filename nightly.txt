@@ -1,0 +1,2 @@
+## Download Encore nightlies from here:
+https://github.com/Encore-Developers/Encore/actions

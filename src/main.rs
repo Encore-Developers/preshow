@@ -9,9 +9,9 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 use std::borrow::Borrow;
+use serenity::all::ActivityData;
 
 struct Handler;
-
 // TODO: clean up the list of commands into just readable files from that folder lol, compact this list more too
 #[async_trait]
 impl EventHandler for Handler {
@@ -128,8 +128,12 @@ async fn main() {
     let intents = GatewayIntents::GUILD_MESSAGES
         | GatewayIntents::DIRECT_MESSAGES
         | GatewayIntents::MESSAGE_CONTENT;
+    let status = ActivityData::playing("encore");
     let mut client =
-        Client::builder(&token, intents).event_handler(Handler).await.expect("Err creating client");
+        Client::builder(&token, intents)
+            .event_handler(Handler)
+            .activity(status)
+            .await.expect("Err creating client");
 
     // match client.start().await {
     //     Err(why) => println!("Bot failed to start: {why:?}"),

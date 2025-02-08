@@ -1,0 +1,4 @@
+### Official, verified Encore chart repository
+<https://github.com/Encore-Developers/songs>
+https://fnlookup.github.io/encore/
+

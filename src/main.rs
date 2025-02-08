@@ -12,6 +12,7 @@ use std::borrow::Borrow;
 
 struct Handler;
 
+// TODO: clean up the list of commands into just readable files from that folder lol, compact this list more too
 #[async_trait]
 impl EventHandler for Handler {
     async fn message(&self, ctx: Context, new_message: Message) {
@@ -41,7 +42,61 @@ impl EventHandler for Handler {
                     return;
                 }
             };
-            let filename = Path::new("nightly.txt");
+            let filename = Path::new("./commands/nightly.txt");
+            if let Err(why) = read_lines(filename) {
+                println!("Error reading file: {filename:?} {why:?}");
+            }
+
+            if let Ok(lines) = read_lines(filename) {
+                let mut nightly = MessageBuilder::new();
+                for line in lines.map_while(Result::ok) {
+                    nightly.push_line(line);
+                }
+                nightly.build();
+                let asd = match new_message.channel_id.say(&ctx.http, &nightly.to_string()).await {
+                    Ok(g) => { return; }
+                    Err(why) => {
+                        println!("Error getting channel: {why:?}");
+                        return;
+                    }
+                };
+            }
+        } else if new_message.content == "!github" {
+            let channel = match new_message.channel_id.to_channel(&ctx).await {
+                Ok(channel) => channel,
+                Err(why) => {
+                    println!("Error getting channel: {why:?}");
+                    return;
+                }
+            };
+            let filename = Path::new("./commands/github.txt");
+            if let Err(why) = read_lines(filename) {
+                println!("Error reading file: {filename:?} {why:?}");
+            }
+
+            if let Ok(lines) = read_lines(filename) {
+                let mut nightly = MessageBuilder::new();
+                for line in lines.map_while(Result::ok) {
+                    nightly.push_line(line);
+                }
+                nightly.build();
+                let asd = match new_message.channel_id.say(&ctx.http, &nightly.to_string()).await {
+                    Ok(g) => { return; }
+                    Err(why) => {
+                        println!("Error getting channel: {why:?}");
+                        return;
+                    }
+                };
+            }
+        } else if new_message.content == "!songs" {
+            let channel = match new_message.channel_id.to_channel(&ctx).await {
+                Ok(channel) => channel,
+                Err(why) => {
+                    println!("Error getting channel: {why:?}");
+                    return;
+                }
+            };
+            let filename = Path::new("./commands/songs.txt");
             if let Err(why) = read_lines(filename) {
                 println!("Error reading file: {filename:?} {why:?}");
             }

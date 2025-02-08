@@ -1,0 +1,2 @@
+### Encore nightly builds (requires GitHub account):
+<https://github.com/Encore-Developers/Encore/actions>
